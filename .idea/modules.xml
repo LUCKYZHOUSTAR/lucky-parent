@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/lucky-net/lucky-net.iml" filepath="$PROJECT_DIR$/lucky-net/lucky-net.iml" />
       <module fileurl="file://$PROJECT_DIR$/lucky-parent.iml" filepath="$PROJECT_DIR$/lucky-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lucky-test/lucky-test.iml" filepath="$PROJECT_DIR$/lucky-test/lucky-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/lucky-util/lucky-util.iml" filepath="$PROJECT_DIR$/lucky-util/lucky-util.iml" />
     </modules>
   </component>

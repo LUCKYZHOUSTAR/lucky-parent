@@ -11,6 +11,7 @@
     <modules>
         <module>lucky-util</module>
         <module>lucky-net</module>
+        <module>lucky-test</module>
     </modules>
 
 
@@ -18,6 +19,7 @@
         <encoding.source>UTF-8</encoding.source>
         <version.jdk>1.8</version.jdk>
         <version.maven.compiler>3.3</version.maven.compiler>
+        <version.logback>1.2.2</version.logback>
         <version.slf4j>1.7.21</version.slf4j>
         <version.log4j>1.2.17</version.log4j>
         <version.lombok>1.16.8</version.lombok>
@@ -44,15 +46,20 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--<dependency>-->
+                <!--<groupId>log4j</groupId>-->
+                <!--<artifactId>log4j</artifactId>-->
+                <!--<version>${version.log4j}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.slf4j</groupId>-->
+                <!--<artifactId>slf4j-api</artifactId>-->
+                <!--<version>${version.slf4j}</version>-->
+            <!--</dependency>-->
             <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${version.log4j}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${version.slf4j}</version>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${version.logback}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>

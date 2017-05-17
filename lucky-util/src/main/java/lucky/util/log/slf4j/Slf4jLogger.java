@@ -6,6 +6,9 @@ import lucky.util.log.Logger;
 import java.io.Serializable;
 
 
+/***
+ * 底层已经引入了logback的jar包，直接加入相应的配置即可
+ */
 public class Slf4jLogger implements Logger, Serializable {
 
 	private static final long serialVersionUID = 1L;

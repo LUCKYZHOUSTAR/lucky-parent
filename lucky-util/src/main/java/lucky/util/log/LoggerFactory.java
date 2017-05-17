@@ -1,6 +1,5 @@
 package lucky.util.log;
 
-import lucky.util.log.lockback.LogBackLoggerAdapter;
 import lucky.util.log.log4j.Log4jLoggerAdapter;
 import lucky.util.log.slf4j.Slf4jLoggerAdapter;
 
@@ -30,9 +29,7 @@ public class LoggerFactory {
         String logger=System.getProperty("com.lucky.logger");
         if(logger.equals(LogType.LOG4J.displayName())){
             setLoggerAdapter(new Log4jLoggerAdapter());
-        }else if(logger.equals(LogType.LOGBACK.displayName())){
-            setLoggerAdapter(new LogBackLoggerAdapter());
-        }else if(logger.equals(LogType.SLF4J.displayName())){
+        }else if(logger.equals(LogType.SLF4J.displayName())||logger.equals(LogType.LOGBACK.displayName())){
             setLoggerAdapter(new Slf4jLoggerAdapter());
         }else{
             //默认是log4j的配置信息

@@ -18,10 +18,10 @@ public class LogBackTest {
     //todo:还是得用相应的logger信息
 //    protected static final Logger logger = LoggerFactory.getLogger(LogBackTest.class);
     public static Logger logger = LoggerFactory.getLogger(LogBackTest.class);
-    public static org.slf4j.impl.StaticLoggerBinder defaultLoggerContext = org.slf4j.impl.StaticLoggerBinder.getSingleton();
+//    public static org.slf4j.impl.StaticLoggerBinder defaultLoggerContext = org.slf4j.impl.StaticLoggerBinder.getSingleton();
 //
 
-    public static ch.qos.logback.classic.Logger logger2 = new ch.qos.logback.classic.LoggerContext().getLogger(LogBackTest.class);
+//    public static ch.qos.logback.classic.Logger logger2 = new ch.qos.logback.classic.LoggerContext().getLogger(LogBackTest.class);
 
     public static void main(String[] args) {
 
@@ -29,4 +29,8 @@ public class LogBackTest {
         logger.error("logback日志类型输出文件");
 
     }
+
+    /***
+     * This warning, i.e. not an error, message is reported when no SLF4J providers could be found on the class path. Placing one (and only one) of slf4j-nop.jar slf4j-simple.jar, slf4j-log4j12.jar, slf4j-jdk14.jar or logback-classic.jar on the class path should solve the problem. Note that these providers must target slf4j-api 1.8 or later.
+     */
 }

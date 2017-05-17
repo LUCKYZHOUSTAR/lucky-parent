@@ -7,12 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="lucky-net" />
+        <module name="lucky-test" />
         <module name="lucky-util" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="lucky-net" target="1.8" />
       <module name="lucky-parent" target="1.8" />
+      <module name="lucky-test" target="1.8" />
       <module name="lucky-util" target="1.8" />
     </bytecodeTargetLevel>
   </component>
