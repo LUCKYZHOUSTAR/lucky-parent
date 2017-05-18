@@ -9,6 +9,7 @@ import lucky.util.log.LoggerFactory;
  * @Description:
  * @Date:Create in 18:40 2017/5/17
  */
+
 public class LogBackTest {
     static {
         System.setProperty("com.lucky.logger", "slf4j");
@@ -16,7 +17,6 @@ public class LogBackTest {
 
 
     //todo:还是得用相应的logger信息
-//    protected static final Logger logger = LoggerFactory.getLogger(LogBackTest.class);
     public static Logger logger = LoggerFactory.getLogger(LogBackTest.class);
 //    public static org.slf4j.impl.StaticLoggerBinder defaultLoggerContext = org.slf4j.impl.StaticLoggerBinder.getSingleton();
 //

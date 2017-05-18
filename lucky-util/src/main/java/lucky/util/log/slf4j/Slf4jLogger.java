@@ -7,7 +7,9 @@ import java.io.Serializable;
 
 
 /***
+ * 支持logback打印
  * 底层已经引入了logback的jar包，直接加入相应的配置即可
+ * 详情看lucky-test里面的logtest相关信息
  */
 public class Slf4jLogger implements Logger, Serializable {
 

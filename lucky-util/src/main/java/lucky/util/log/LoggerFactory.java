@@ -26,12 +26,12 @@ public class LoggerFactory {
     //查询常用的日志框架信息
     static {
         //todo:该配置需要提前初始化
-        String logger=System.getProperty("com.lucky.logger");
-        if(logger.equals(LogType.LOG4J.displayName())){
+        String logger = System.getProperty("com.lucky.logger");
+        if (logger.equals(LogType.LOG4J.displayName())) {
             setLoggerAdapter(new Log4jLoggerAdapter());
-        }else if(logger.equals(LogType.SLF4J.displayName())||logger.equals(LogType.LOGBACK.displayName())){
+        } else if (logger.equals(LogType.SLF4J.displayName()) || logger.equals(LogType.LOGBACK.displayName())) {
             setLoggerAdapter(new Slf4jLoggerAdapter());
-        }else{
+        } else {
             //默认是log4j的配置信息
             setLoggerAdapter(new Log4jLoggerAdapter());
         }
@@ -48,9 +48,10 @@ public class LoggerFactory {
             Logger logger = loggerAdapter.getLogger(LoggerFactory.class.getName());
             logger.info("using logger: " + loggerAdapter.getClass().getName());
             LoggerFactory.LOGGER_ADAPTER = loggerAdapter;
-//            for (Map.Entry<String, FailsafeLogger> entry : LOGGERS.entrySet()) {
-//                entry.getValue().setLogger(LOGGER_ADAPTER.getLogger(entry.getKey()));
-//            }
+            //清理logger缓存的信息
+            for (String key : LOGGERS.keySet()) {
+                LOGGERS.put(key, LOGGER_ADAPTER.getLogger(key));
+            }
         }
     }
 
