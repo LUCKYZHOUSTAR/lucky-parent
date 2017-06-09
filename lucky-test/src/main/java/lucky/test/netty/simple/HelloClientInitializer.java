@@ -11,9 +11,13 @@ import io.netty.handler.codec.string.StringEncoder;
 
 public class HelloClientInitializer extends ChannelInitializer<SocketChannel> {
 
+
+
+    //每次客户端链接的时候都会调用改方法，可以用来判断客户端最大得连接数目
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
+        System.out.println("我出水似乎啊了");
 
         /*
          * 这个地方的 必须和服务端对应上。否则无法正常解码和编码

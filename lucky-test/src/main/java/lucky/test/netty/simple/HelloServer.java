@@ -17,7 +17,9 @@ public class HelloServer {
     private static final int protNumber = 8807;
 
     public static void main(String[] args) throws InterruptedException {
+        //负责tcp请求
         EventLoopGroup bossGroup = new NioEventLoopGroup();
+        //负责io读写
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
