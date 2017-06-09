@@ -13,13 +13,13 @@ import java.io.Serializable;
  */
 public class Slf4jLogger implements Logger, Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private final org.slf4j.Logger logger;
+    private final org.slf4j.Logger logger;
 
-	public Slf4jLogger(org.slf4j.Logger logger) {
-		this.logger = logger;
-	}
+    public Slf4jLogger(org.slf4j.Logger logger) {
+        this.logger = logger;
+    }
 
     public void trace(String msg) {
         logger.trace(msg);
@@ -31,6 +31,21 @@ public class Slf4jLogger implements Logger, Serializable {
 
     public void trace(String msg, Throwable e) {
         logger.trace(msg, e);
+    }
+
+    @Override
+    public void trace(String format, Object arg) {
+        this.logger.trace(format, arg);
+    }
+
+    @Override
+    public void trace(String format, Object arg1, Object arg2) {
+        this.logger.trace(format, arg1, arg2);
+    }
+
+    @Override
+    public void trace(String format, Object... args) {
+        this.logger.trace(format, args);
     }
 
     public void debug(String msg) {
@@ -45,6 +60,21 @@ public class Slf4jLogger implements Logger, Serializable {
         logger.debug(msg, e);
     }
 
+    @Override
+    public void debug(String format, Object arg) {
+        this.logger.debug(format, arg);
+    }
+
+    @Override
+    public void debug(String format, Object arg1, Object arg2) {
+        this.logger.debug(format, arg1, arg2);
+    }
+
+    @Override
+    public void debug(String format, Object... args) {
+        this.logger.debug(format, args);
+    }
+
     public void info(String msg) {
         logger.info(msg);
     }
@@ -55,6 +85,21 @@ public class Slf4jLogger implements Logger, Serializable {
 
     public void info(String msg, Throwable e) {
         logger.info(msg, e);
+    }
+
+    @Override
+    public void info(String format, Object arg) {
+        this.logger.info(format, arg);
+    }
+
+    @Override
+    public void info(String format, Object arg1, Object arg2) {
+        this.logger.info(format, arg1, arg2);
+    }
+
+    @Override
+    public void info(String format, Object... args) {
+        this.logger.info(format, args);
     }
 
     public void warn(String msg) {
@@ -69,6 +114,21 @@ public class Slf4jLogger implements Logger, Serializable {
         logger.warn(msg, e);
     }
 
+    @Override
+    public void warn(String format, Object arg) {
+        this.logger.warn(format, arg);
+    }
+
+    @Override
+    public void warn(String format, Object... args) {
+        this.logger.warn(format, args);
+    }
+
+    @Override
+    public void warn(String format, Object arg1, Object arg2) {
+        this.logger.warn(format, arg1, arg2);
+    }
+
     public void error(String msg) {
         logger.error(msg);
     }
@@ -79,6 +139,21 @@ public class Slf4jLogger implements Logger, Serializable {
 
     public void error(String msg, Throwable e) {
         logger.error(msg, e);
+    }
+
+    @Override
+    public void error(String format, Object arg) {
+        this.logger.error(format, arg);
+    }
+
+    @Override
+    public void error(String format, Object arg1, Object arg2) {
+        this.logger.error(format, arg1, arg2);
+    }
+
+    @Override
+    public void error(String format, Object... args) {
+        this.logger.error(format, args);
     }
 
     public boolean isTraceEnabled() {

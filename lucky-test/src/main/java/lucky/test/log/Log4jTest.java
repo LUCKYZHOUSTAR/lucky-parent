@@ -16,6 +16,6 @@ public class Log4jTest {
 
     public static void main(String[] args) {
 
-        logger.info("log4j日志类型测试信息");
+        logger.info("log4j日志类型测试信息{}","asdf");
     }
 }

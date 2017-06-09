@@ -24,7 +24,6 @@ public class ConfigMap {
         this.settings = settings;
     }
 
-    // todo: 历史遗留问题, 1.1 版本中移除
     @Deprecated
     public ConfigMap(HashMap<String, String> settings) {
         this.settings = settings;

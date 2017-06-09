@@ -26,7 +26,11 @@ public class LogBackTest {
     public static void main(String[] args) {
 
         logger.info("logback日志类型测试信息");
+        logger.info("{},sdff,{}","sadf","哈哈");
         logger.error("logback日志类型输出文件");
+        logger.trace("{},sdff,{}","sadf","哈哈");
+        logger.debug("{},sdff,{}","sadf","哈哈");
+        logger.error("{},sdff,{}","sadf","哈哈");
 
     }
 

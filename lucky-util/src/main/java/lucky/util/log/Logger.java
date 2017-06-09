@@ -13,7 +13,6 @@ public interface Logger {
      * @param msg 信息内容
      */
     public void trace(String msg);
-
     /**
      * 输出跟踪信息
      *
@@ -29,6 +28,12 @@ public interface Logger {
      */
     public void trace(String msg, Throwable e);
 
+
+    void trace(String format, Object arg);
+
+    void trace(String format, Object arg1, Object arg2);
+
+    void trace(String format, Object... args);
     /**
      * 输出调试信息
      *
@@ -50,6 +55,13 @@ public interface Logger {
      * @param e 异常信息
      */
     public void debug(String msg, Throwable e);
+
+    void debug(String format, Object arg);
+
+    void debug(String format, Object arg1, Object arg2);
+
+    void debug(String format, Object... args);
+
 
     /**
      * 输出普通信息
@@ -73,6 +85,13 @@ public interface Logger {
      */
     public void info(String msg, Throwable e);
 
+
+    void info(String format, Object arg);
+
+    void info(String format, Object arg1, Object arg2);
+
+    void info(String format, Object... args);
+
     /**
      * 输出警告信息
      *
@@ -95,6 +114,13 @@ public interface Logger {
      */
     public void warn(String msg, Throwable e);
 
+
+    void warn(String format, Object arg);
+
+    void warn(String format, Object... args);
+
+    void warn(String format, Object arg1, Object arg2);
+
     /**
      * 输出错误信息
      *
@@ -116,6 +142,12 @@ public interface Logger {
      * @param e 异常信息
      */
     public void error(String msg, Throwable e);
+
+    void error(String format, Object arg);
+
+    void error(String format, Object arg1, Object arg2);
+
+    void error(String format, Object... args);
 
     /**
      * 跟踪信息是否开启
