@@ -1,14 +1,15 @@
 package server;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import lucky.util.log.Logger;
 import lucky.util.log.LoggerFactory;
+import server.handler.RemotingServerInitializer;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,6 +24,7 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
     private RemotingServerConfig remotingServerConfig;
     private EventLoopGroup workerGroup;
     private EventLoopGroup bossGroup;
+
     //负责io读写线程，否则会占用worker线程，如果解析慢得话，最好利用该线程池，处理业务不慢得话，最好不用，减少线程上下文的切换开销
     private DefaultEventExecutorGroup defaultEventExecutorGroup;
 
@@ -53,9 +55,11 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
         });
 
         this.defaultEventExecutorGroup = new DefaultEventExecutorGroup(remotingServerConfig.getWorkSelectorThread(), new ThreadFactory() {
+            private AtomicInteger threadIndex = new AtomicInteger(0);
+
             @Override
             public Thread newThread(Runnable r) {
-                return null;
+                return new Thread(r, String.format("worderSelecotor_d%", this.threadIndex.getAndIncrement()));
             }
         });
 
@@ -64,20 +68,58 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
 
     @Override
     public void start() {
-        this.group(bossGroup,workerGroup)
+        this.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_BACKLOG,remotingServerConfig.getBackLogRequest())
-                .option(ChannelOption.SO_RCVBUF,remotingServerConfig.getReceiveBufferSize())
-                .option(ChannelOption.SO_SNDBUF,remotingServerConfig.getSenBufferSize())
-                .option(ChannelOption.TCP_NODELAY,remotingServerConfig.isTcpNoDelay());
-        if(remotingServerConfig.isServerPooledByteBufAllocatorEnable()){
-
+                .option(ChannelOption.SO_BACKLOG, remotingServerConfig.getBackLogRequest())
+                .option(ChannelOption.SO_RCVBUF, remotingServerConfig.getReceiveBufferSize())
+                .option(ChannelOption.SO_SNDBUF, remotingServerConfig.getSenBufferSize())
+                .option(ChannelOption.TCP_NODELAY, remotingServerConfig.isTcpNoDelay());
+        //这个选项会占用大量得堆外内存
+        if (remotingServerConfig.isServerPooledByteBufAllocatorEnable()) {
+            this.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
         }
+
+
+
+
 
     }
 
     @Override
     public void stop() {
 
+    }
+
+
+    public RemotingServerConfig getRemotingServerConfig() {
+        return remotingServerConfig;
+    }
+
+    public void setRemotingServerConfig(RemotingServerConfig remotingServerConfig) {
+        this.remotingServerConfig = remotingServerConfig;
+    }
+
+    public EventLoopGroup getWorkerGroup() {
+        return workerGroup;
+    }
+
+    public void setWorkerGroup(EventLoopGroup workerGroup) {
+        this.workerGroup = workerGroup;
+    }
+
+    public EventLoopGroup getBossGroup() {
+        return bossGroup;
+    }
+
+    public void setBossGroup(EventLoopGroup bossGroup) {
+        this.bossGroup = bossGroup;
+    }
+
+    public DefaultEventExecutorGroup getDefaultEventExecutorGroup() {
+        return defaultEventExecutorGroup;
+    }
+
+    public void setDefaultEventExecutorGroup(DefaultEventExecutorGroup defaultEventExecutorGroup) {
+        this.defaultEventExecutorGroup = defaultEventExecutorGroup;
     }
 }
