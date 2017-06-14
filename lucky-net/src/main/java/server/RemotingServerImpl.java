@@ -9,9 +9,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import lucky.util.log.Logger;
 import lucky.util.log.LoggerFactory;
-import server.handler.RemotingServerInitializer;
+import server.handler.ConnectionHandler;
 
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -24,6 +24,10 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
     private RemotingServerConfig remotingServerConfig;
     private EventLoopGroup workerGroup;
     private EventLoopGroup bossGroup;
+    private ServerContainer serverContainer;
+    private ExecutorService executors;
+
+    private ConnectionHandler sessionHandler = new ConnectionHandler();
 
     //负责io读写线程，否则会占用worker线程，如果解析慢得话，最好利用该线程池，处理业务不慢得话，最好不用，减少线程上下文的切换开销
     private DefaultEventExecutorGroup defaultEventExecutorGroup;
@@ -31,6 +35,7 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
 
     public RemotingServerImpl(RemotingServerConfig config) {
         this.remotingServerConfig = config;
+        this.serverContainer = new ServerContainer();
         init();
     }
 
@@ -63,6 +68,11 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
             }
         });
 
+        //初始化业务端连接池操作连接池操作，通过一个队列来执行
+        BlockingQueue workQueue = new LinkedBlockingQueue(this.remotingServerConfig.getBackLogRequest());
+        this.executors = new ThreadPoolExecutor(this.remotingServerConfig.getMinThread(), this.remotingServerConfig.getMaxThread(),
+                this.remotingServerConfig.getKeepAliveTime(), TimeUnit.MILLISECONDS, workQueue);
+
     }
 
 
@@ -71,6 +81,8 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
         this.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, remotingServerConfig.getBackLogRequest())
+                .option(ChannelOption.SO_KEEPALIVE, false)
+                .option(ChannelOption.SO_REUSEADDR, true)
                 .option(ChannelOption.SO_RCVBUF, remotingServerConfig.getReceiveBufferSize())
                 .option(ChannelOption.SO_SNDBUF, remotingServerConfig.getSenBufferSize())
                 .option(ChannelOption.TCP_NODELAY, remotingServerConfig.isTcpNoDelay());
@@ -80,14 +92,46 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
         }
 
 
+        logger.info("rpc server starting at:{}", remotingServerConfig.getAddress());
 
+        this.bind(remotingServerConfig.getAddress(), remotingServerConfig.getPort()).addListener(future -> {
+
+            if (future.isSuccess()) {
+                logger.info("rpc server start success");
+            } else {
+                logger.error("rpc server start failed error{}", future.cause());
+
+                //启动不起来直接就干掉
+                System.exit(1);
+            }
+
+        });
 
 
     }
 
     @Override
     public void stop() {
+        try {
+            //优雅关闭掉
+            this.bossGroup.shutdownGracefully();
+            this.workerGroup.shutdownGracefully();
+            if (this.defaultEventExecutorGroup != null) {
+                this.defaultEventExecutorGroup.shutdownGracefully();
+            }
+        } catch (Exception e) {
+            logger.error("NettyRemotingServer shutdown exception, ", e);
+        }
+    }
 
+    @Override
+    public void registerService(Object instance) {
+        this.serverContainer.registerService(instance);
+    }
+
+    @Override
+    public void registerService(Class<?> clazz, Object instance) {
+        this.serverContainer.registerService(clazz, instance);
     }
 
 
@@ -121,5 +165,31 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
 
     public void setDefaultEventExecutorGroup(DefaultEventExecutorGroup defaultEventExecutorGroup) {
         this.defaultEventExecutorGroup = defaultEventExecutorGroup;
+    }
+
+
+    public ConnectionHandler getSessionHandler() {
+        return sessionHandler;
+    }
+
+    public void setSessionHandler(ConnectionHandler sessionHandler) {
+        this.sessionHandler = sessionHandler;
+    }
+
+
+    public ServerContainer getServerContainer() {
+        return serverContainer;
+    }
+
+    public void setServerContainer(ServerContainer serverContainer) {
+        this.serverContainer = serverContainer;
+    }
+
+    public ExecutorService getExecutors() {
+        return executors;
+    }
+
+    public void setExecutors(ExecutorService executors) {
+        this.executors = executors;
     }
 }

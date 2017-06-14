@@ -8,6 +8,7 @@ package server;
 public interface RemotingServer {
 
     public void start();
-
     public void stop();
+    void registerService(Object instance);
+    void registerService(Class<?> clazz, Object instance);
 }

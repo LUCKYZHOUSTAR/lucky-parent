@@ -8,13 +8,20 @@ package server;
 public class RemotingServerConfig {
 
 
+    //ip
     private String address;
+    //端口号
+    private int port;
     private int bossThread = Runtime.getRuntime().availableProcessors();
     private int workThread = Runtime.getRuntime().availableProcessors() * 2;
-    /**handler处理业务流程，免去了worker占用cpu的时间*/
-    private int workSelectorThread = Runtime.getRuntime().availableProcessors() * 2;
+    /**
+     * handler处理业务流程，免去了worker占用cpu的时间
+     */
+    private int workSelectorThread = Runtime.getRuntime().availableProcessors() * 4;
     private int minThread = 10;
     private int maxThread = 500;
+    //客户端最大的连接数限制
+    private int maxClients=1000;
     private int readTimeOut = 30 * 1000;
     private int writeTimeOut = 30 * 1000;
     /*接受缓冲区的大小设置，默认是64M*
@@ -27,12 +34,9 @@ public class RemotingServerConfig {
     private int keepAliveTime = 30 * 60;//单位是秒，默认是30分钟
     private boolean tcpNoDelay = true;
     //服务端处理线程全忙后，允许多少个新请求进入等待。
-    private int backLogRequest=1024;
+    private int backLogRequest = 1024;
     //是否是堆外内存
     private boolean serverPooledByteBufAllocatorEnable = false;
-
-
-
 
 
     public RemotingServerConfig() {
@@ -150,5 +154,21 @@ public class RemotingServerConfig {
 
     public void setTcpNoDelay(boolean tcpNoDelay) {
         this.tcpNoDelay = tcpNoDelay;
+    }
+
+    public int getMaxClients() {
+        return maxClients;
+    }
+
+    public void setMaxClients(int maxClients) {
+        this.maxClients = maxClients;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }
