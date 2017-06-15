@@ -7,7 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 /**
  * @Author:chaoqiang.zhou
- * @Description:
+ * @Description:业务端处处理器操作
  * @Date:Create in 16:20 2017/6/14
  */
 public class LocalNettyExecutor implements NettyRequestProcessor {

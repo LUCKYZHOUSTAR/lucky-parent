@@ -41,6 +41,7 @@ public class ProtocolDecoder extends ByteToMessageDecoder {
 
 
     private void decode(ByteBuf buf, List<Object> out) throws Exception {
+        //顺序按照包的结构进行读取，后期可以考虑换netty中得其他channelinbound操作
         switch (state) {
             case HEADER:
                 decodeHeader(buf, out);

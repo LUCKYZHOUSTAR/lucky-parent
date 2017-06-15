@@ -31,6 +31,7 @@ public class RemotingServerInitializer extends ChannelInitializer<Channel> {
     }
 
     //初始化channel操作,增加编码和解码
+    //todo:后期可以考虑jupter框架，加入高低水位得限制，防止channel莫名奇妙得增加过快，占用大量得内存操作
     @Override
     protected void initChannel(Channel channel) throws Exception {
         logger.debug("initialze channel");
@@ -43,7 +44,6 @@ public class RemotingServerInitializer extends ChannelInitializer<Channel> {
             return;
         }
         IdleHandler idleHandler = new IdleHandler(config.getReadTimeOut(), config.getWriteTimeOut(), config.getKeepAliveTime());
-
         ChannelPipeline pipeline = channel.pipeline();
         pipeline.addLast(remotingServer.getDefaultEventExecutorGroup());
         pipeline.addLast(IDLE_STATE, idleHandler);

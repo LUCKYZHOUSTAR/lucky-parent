@@ -44,6 +44,14 @@ public class ServerHandler extends SimpleChannelInboundHandler<NettyRequest> {
     }
 
 
+    //channel出现异常信息操作得时候自动触发
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        logger.error("the error {},channel,{}",cause,ctx);
+        ctx.close();
+        //后期可以考虑根据不同得异常进行响应得操作
+    }
+
     private static class ServerTask implements Runnable {
 
         private final NettyRequestProcessor processor;
@@ -66,7 +74,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<NettyRequest> {
                 response = NettyResponse.failed(e);
                 logger.error("request processing failed e", e);
             }
-
             //返回到服务端的信息
             ctx.channel().writeAndFlush(response);
 

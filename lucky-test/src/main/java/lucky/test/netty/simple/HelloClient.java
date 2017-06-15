@@ -38,6 +38,7 @@ public class HelloClient {
 //            ChannelFuture f=b.connect(host,port).sync();
 //            Channel ch=b.channel()
 //            ChannelFuture f = b.bind(host, port).sync();
+
             ChannelFuture f = b.connect(host, port).sync();
             Channel ch = f.channel();
             //等待服务端链路关闭后，main函数才会退出
@@ -57,6 +58,7 @@ public class HelloClient {
                  * 之所以用\r\n结尾 是因为我们在handler中添加了 DelimiterBasedFrameDecoder 帧解码。
                  * 这个解码器是一个根据\n符号位分隔符的解码器。所以每条消息的最后必须加上\n否则无法识别和解码
                  * */
+
                 ch.writeAndFlush(line + "\r\n");
             }
 

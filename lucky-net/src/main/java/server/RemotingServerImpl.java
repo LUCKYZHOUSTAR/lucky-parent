@@ -10,6 +10,7 @@ import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import lucky.util.log.Logger;
 import lucky.util.log.LoggerFactory;
 import server.handler.ConnectionHandler;
+import server.handler.RemotingServerInitializer;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -73,6 +74,8 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
         this.executors = new ThreadPoolExecutor(this.remotingServerConfig.getMinThread(), this.remotingServerConfig.getMaxThread(),
                 this.remotingServerConfig.getKeepAliveTime(), TimeUnit.MILLISECONDS, workQueue);
 
+        //初始化handlercontext操作
+        this.childHandler(new RemotingServerInitializer(this));
     }
 
 
@@ -95,12 +98,10 @@ public class RemotingServerImpl extends ServerBootstrap implements RemotingServe
         logger.info("rpc server starting at:{}", remotingServerConfig.getAddress());
 
         this.bind(remotingServerConfig.getAddress(), remotingServerConfig.getPort()).addListener(future -> {
-
             if (future.isSuccess()) {
                 logger.info("rpc server start success");
             } else {
                 logger.error("rpc server start failed error{}", future.cause());
-
                 //启动不起来直接就干掉
                 System.exit(1);
             }
