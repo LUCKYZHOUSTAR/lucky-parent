@@ -1,9 +1,5 @@
 package rpc;
 
-import client.ClientChannel;
-import client.ClientOptions;
-import data.NettyRequest;
-import data.NettyResponse;
 import exception.RpcException;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -11,6 +7,10 @@ import io.netty.channel.pool.ChannelPool;
 import io.netty.util.concurrent.Future;
 import lucky.util.log.Logger;
 import lucky.util.log.LoggerFactory;
+import remoting.client.ClientChannel;
+import remoting.client.ClientOptions;
+import remoting.data.NettyRequest;
+import remoting.data.NettyResponse;
 
 
 /**
@@ -42,10 +42,7 @@ public class RpcInvoker implements Invoker {
             } catch (Exception e) {
                 logger.error("create request error{}", e);
                 throw new RpcException(RpcException.NETWORK_EXCEPTION, e);
-
             }
-
-
             //获取连接操作
             Future<Channel> future = pool.acquire().awaitUninterruptibly();
             if (!future.isSuccess()) {

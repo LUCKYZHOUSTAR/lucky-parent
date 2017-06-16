@@ -1,6 +1,6 @@
 package annotation;
 
-import server.FailMode;
+import remoting.server.FailMode;
 
 import java.lang.annotation.*;
 

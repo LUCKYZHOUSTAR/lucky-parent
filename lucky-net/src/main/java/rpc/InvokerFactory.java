@@ -1,8 +1,9 @@
 package rpc;
 
-import client.ClientChanelPoolFactory;
-import client.ClientChannelPool;
-import client.ClientOptions;
+import remoting.client.ClientChanelPoolFactory;
+import remoting.client.ClientChannelPool;
+import remoting.client.ClientOptions;
+import rpc.options.RpcClientOptions;
 
 /**
  * @Author:chaoqiang.zhou
@@ -17,9 +18,9 @@ public class InvokerFactory {
     }
 
 
-    public static RpcInvoker get(ClientOptions options){
-
-        ClientChannelPool pool=poolMap.get(options);
-        return new RpcInvoker(pool,options);
+    public static RpcInvoker get(RpcClientOptions options){
+        ClientOptions clientOptions=new ClientOptions(options);
+        ClientChannelPool pool=poolMap.get(clientOptions);
+        return new RpcInvoker(pool,clientOptions);
     }
 }
